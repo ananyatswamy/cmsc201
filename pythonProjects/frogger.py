@@ -7,7 +7,7 @@ E-mail: ho20134@umbc.edu
 Description: the frog must avoid getting run over by the cars and cross the road
 the frog can jump and it can move using the asdw keys
 """
-#?hi/
+
 import os
 from shutil import which
 
@@ -178,12 +178,12 @@ def move(round_num, current_list, jump_count, file, first_time):
             print_game(round_num, current_list)
             print("You won, Frog lives to cross another day.")
             return True, jump_count
-        elif current_list[frog_row + 1][frog_col] == "_":
+        elif current_list[frog_row + 1][frog_col-(real_speed_list[frog_row])] == "_":
             current_list[frog_row][frog_col] = "_"
             current_list[frog_row + 1][frog_col-(real_speed_list[frog_row])] = frog
             print_game(round_num, current_list)
             return False, jump_count
-        elif current_list[frog_row + 1][frog_col] == "X":
+        elif current_list[frog_row + 1][frog_col-(real_speed_list[frog_row])] == "X":
             current_list[frog_row][frog_col] = "_"
             current_list[frog_row + 1][frog_col-(real_speed_list[frog_row])] = '\U0001318F'
             print_game(round_num, current_list)
@@ -234,8 +234,16 @@ def move(round_num, current_list, jump_count, file, first_time):
             print("You Lost, Sorry Frog")
             return True, jump_count
     else:
-        print_game(round_num, current_list)
-        return False, jump_count
+        current_list[frog_row][frog_col] = "_"
+        if current_list[frog_row][frog_col - (real_speed_list[frog_row])] == "X":
+            current_list[frog_row][frog_col - (real_speed_list[frog_row])] = '\U0001318F'
+            print("You Lost, Sorry Frog")
+            print_game(round_num, current_list)
+            return True, jump_count
+        elif current_list[frog_row][frog_col - (real_speed_list[frog_row])] == "_":
+            current_list[frog_row][frog_col - (real_speed_list[frog_row])] = frog
+            print_game(round_num, current_list)
+            return False, jump_count
 
 
 def frogger_game(file):
